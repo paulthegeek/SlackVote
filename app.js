@@ -4,6 +4,7 @@
  * Express Dependencies
  */
 var express = require('express');
+var exphbs  = require('express3-handlebars');
 var nconf = require('nconf');
 nconf.argv()
        .env()
