@@ -11,14 +11,17 @@ nconf.argv()
 var app = express();
 var port = 3000;
 
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+
 /*
  * Mongo DB
  */
 var mongo = require('mongodb');
 var monk = require('monk');
-var mongoUri = process.env.MONGOLAB_URI || 
-  process.env.MONGOHQ_URL || 
-  'localhost:27017/VoteDB'; 
+var mongoUri = process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  'localhost:27017/VoteDB';
 
 var db = monk(mongoUri);
 
@@ -71,11 +74,11 @@ app.post('/outgoing', function(req, res, next) {
 
     // Trigger is to start vote
     if (trigger_word == 'startvote') {
-        
+
         //get all members in channel
         slack.api("channels.info", { 'channel' : channelID}, function(err, response) {
-            
-            //expect their responses 
+
+            //expect their responses
             response.channel.members.forEach(function(m) {
                 votes.update(
                     { 'userID' : m, 'channelID' : channelID },
@@ -87,7 +90,7 @@ app.post('/outgoing', function(req, res, next) {
                     }
                 );
             });
-            
+
         });
 
         //respond asking for votes from everyone
@@ -99,14 +102,14 @@ app.post('/outgoing', function(req, res, next) {
 
         // get channel members
         slack.api('channels.info', { 'channel' : channelID }, function(err, response) {
-            
+
             var params = { userID : { $in : response.channel.members }, channelID : channelID, status : 1 };
-            
+
             votes.find(
                 params,
                 function(err, results){
                     if (err) throw err;
-                    
+
                     if (results.length > 0) {
                         results.forEach(function(r) {
                             if (trigger_text.indexOf('anon') < 0) {
@@ -119,27 +122,27 @@ app.post('/outgoing', function(req, res, next) {
                         res.json({ text : "No votes found." });
                     }
                 }
-            );    
-        });     
+            );
+        });
     } else if (trigger_word == 'votecount') {
         // get channel members
         slack.api('channels.info', { 'channel' : channelID }, function(err, response) {
-            
+
             var params = { userID : { $in : response.channel.members }, channelID : channelID, status : 1 };
-            
+
             votes.find(
                 params,
                 function(err, results){
                     if (err) throw err;
-                    
+
                     res.json({ text : results.length + " votes casted" });
                 }
-            );    
+            );
         });
     } else {
         res.json({ text : 'Unknown trigger' });
     }
-    
+
 });
 
 // Slack command - vote from a user
