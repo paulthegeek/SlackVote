@@ -6,9 +6,6 @@
 var express = require('express');
 var exphbs  = require('express3-handlebars');
 var nconf = require('nconf');
-nconf.argv()
-       .env()
-       .file({ file: './config.json' });
 var app = express();
 var port = 3000;
 
@@ -30,7 +27,7 @@ var db = monk(mongoUri);
  * Slack configuration
  */
 var Slack = require('slack-node');
-var appAccessToken = nconf.get(process.env.ACCESSTOKEN);
+var appAccessToken = app.get(process.env.ACCESSTOKEN);
 
 // For gzip compression
 app.use(express.compress());
@@ -60,9 +57,8 @@ app.get('/', function(request, response, next) {
 // Outgoing webhooks from Slack
 app.post('/outgoing', function(req, res, next) {
     var votes = req.db.get('votes');
-    console.log(process.env.OUTGOINGTOKEN.toString());
-    console.log("BODY: " + req.body.token);
-    if (req.body.token != nconf.get(process.env.OUTGOINGTOKEN.toString())) {
+
+    if (req.body.token != app.get(process.env.OUTGOINGTOKEN)) {
         res.json({ text : 'Invalid token' });
         return;
     }
@@ -72,7 +68,6 @@ app.post('/outgoing', function(req, res, next) {
 
     // config for slack api call
     var slack = new Slack(appAccessToken);
-    console.log(slack);
     var channelID = req.body.channel_id;
 
     // Trigger is to start vote
@@ -155,7 +150,7 @@ app.post('/vote', function(req, res, next) {
     var input = req.body;
     console.log(input);
 
-    if (input.token != nconf.get(process.env.COMMAND)) {
+    if (input.token != app.get(process.env.COMMAND)) {
         res.json('Invalid token');
         return;
     }
