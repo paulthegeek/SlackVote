@@ -61,6 +61,7 @@ app.get('/', function(request, response, next) {
 app.post('/outgoing', function(req, res, next) {
     var votes = req.db.get('votes');
     console.log(process.env.OUTGOINGTOKEN.toString());
+    console.log("BODY: " + req.body.token);
     if (req.body.token != nconf.get(process.env.OUTGOINGTOKEN.toString())) {
         res.json({ text : 'Invalid token' });
         return;
