@@ -30,7 +30,7 @@ var db = monk(mongoUri);
  * Slack configuration
  */
 var Slack = require('slack-node');
-var appAccessToken = nconf.get('appAccessToken');
+var appAccessToken = nconf.get(process.env.ACCESSTOKEN);
 
 // For gzip compression
 app.use(express.compress());
@@ -61,7 +61,7 @@ app.get('/', function(request, response, next) {
 app.post('/outgoing', function(req, res, next) {
     var votes = req.db.get('votes');
 
-    if (req.body.token != nconf.get('outgoingToken')) {
+    if (req.body.token != nconf.get(process.env.OUTGOINGTOKEN)) {
         res.json({ text : 'Invalid token' });
         return;
     }
@@ -153,7 +153,7 @@ app.post('/vote', function(req, res, next) {
     var input = req.body;
     console.log(input);
 
-    if (input.token != nconf.get('commandToken')) {
+    if (input.token != nconf.get(process.env.COMMAND)) {
         res.json('Invalid token');
         return;
     }
