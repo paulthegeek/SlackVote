@@ -71,6 +71,7 @@ app.post('/outgoing', function(req, res, next) {
 
     // config for slack api call
     var slack = new Slack(appAccessToken);
+    console.log(slack);
     var channelID = req.body.channel_id;
 
     // Trigger is to start vote
