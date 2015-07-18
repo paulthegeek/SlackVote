@@ -57,7 +57,7 @@ app.get('/', function(request, response, next) {
 // Outgoing webhooks from Slack
 app.post('/outgoing', function(req, res, next) {
     var votes = req.db.get('votes');
-
+    console.log("GET: " + app.get(process.env.OUTGOINGTOKEN))
     if (req.body.token != app.get(process.env.OUTGOINGTOKEN)) {
         res.json({ text : 'Invalid token' });
         return;
