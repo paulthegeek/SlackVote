@@ -74,9 +74,9 @@ app.post('/outgoing', function(req, res, next) {
 
         //get all members in channel
         slack.api("channels.info", { 'channel' : channelID}, function(err, response) {
-
+        console.log("What is Slack: " + slack);
             //expect their responses
-            console.log("Members: " + response.channel);
+            console.log("Channel: " + response.channel);
             response.channel.members.forEach(function(m) {
                 votes.update(
                     { 'userID' : m, 'channelID' : channelID },
