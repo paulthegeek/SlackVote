@@ -77,22 +77,25 @@ app.post('/outgoing', function(req, res, next) {
         });
         //get all members in channel
         //Needs app token as well
-        slack.api("channels.info", {token: process.env.ACCESSTOKEN, channel: channelID}, function(err, response) {
-            //expect their responses
-            console.log("Response: " + JSON.stringify(response));
-            response.channel.members.forEach(function(m) {
-                votes.update(
-                    { 'userID': m, 'channelID': channelID },
-                    { 'userID': m, 'username': '', 'channelID': channelID, 'status': 0, 'vote': ''},
-                    { upsert: true },
-                    function (err, doc) {
-                        if (err) throw err;
-                        console.log(doc);
-                    }
-                );
-            });
-
+        app.get('https://slack.com/api/channels.info?'+'token='+process.env.ACCESSTOKEN+'&channel='+channelID+'&pretty=1', function(err, response) {
+            console.log(JSON.stringify(response));
         });
+        // slack.api("channels.info", {token: process.env.ACCESSTOKEN, channel: channelID}, function(err, response) {
+        //     //expect their responses
+        //     console.log("Response: " + JSON.stringify(response));
+        //     response.channel.members.forEach(function(m) {
+        //         votes.update(
+        //             { 'userID': m, 'channelID': channelID },
+        //             { 'userID': m, 'username': '', 'channelID': channelID, 'status': 0, 'vote': ''},
+        //             { upsert: true },
+        //             function (err, doc) {
+        //                 if (err) throw err;
+        //                 console.log(doc);
+        //             }
+        //         );
+        //     });
+
+        // });
 
         //respond asking for votes from everyone
         res.json({text: 'everyone reply with "/vote <youranswer>"'});
