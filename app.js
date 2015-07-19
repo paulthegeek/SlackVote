@@ -70,7 +70,7 @@ app.post('/outgoing', function(req, res, next) {
     var channelID = req.body.channel_id;
     console.log("ChannelID: " + channelID);
     slack.api("users.list", function(err, response) {
-        console.log("User list response: " + response);
+        console.log("User list response: " + JSON.stringify(response));
     });
     // Trigger is to start vote
     if (trigger_word == 'startvote') {
