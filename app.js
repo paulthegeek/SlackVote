@@ -73,7 +73,7 @@ app.post('/outgoing', function(req, res, next) {
     if (trigger_word == 'startvote') {
         //get all members in channel
         //Needs app token as well
-
+        console.log("Access Token: " + appAccessToken);
         slack.api('auth.test', {'token': appAccessToken.toString()}, function(err, response) {
             console.log("Response: " + JSON.stringify(response));
             console.log("Error: " + JSON.stringify(err));
