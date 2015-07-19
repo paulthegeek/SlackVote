@@ -75,7 +75,8 @@ app.post('/outgoing', function(req, res, next) {
         //get all members in channel
         //Needs app token as well
         console.log("Slack: " + JSON.stringify(slack));
-        
+        var tester = {token: process.env.ACCESSTOKEN, channel: channelID};
+        console.log(JSON.stringify(tester));
         slack.api("channels.info", {token: process.env.ACCESSTOKEN, channel: channelID}, function(err, response) {
             //expect their responses
             console.log("Response: " + JSON.stringify(response));
