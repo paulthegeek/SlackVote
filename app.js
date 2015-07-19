@@ -69,6 +69,7 @@ app.post('/outgoing', function(req, res, next) {
     var slack = new Slack(appAccessToken);
     var channelID = req.body.channel_id;
     // Trigger is to start vote
+    console.log("Slack: " JSON.stringify(slack));
     if (trigger_word == 'startvote') {
         //get all members in channel
         //Needs app token as well
