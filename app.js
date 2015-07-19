@@ -76,6 +76,7 @@ app.post('/outgoing', function(req, res, next) {
         //Needs app token as well
         slack.api("channels.info", {'token': process.env.ACCESSTOKEN, 'channel' : channelID}, function(err, response) {
             //expect their responses
+            console.log("Response: " + JSON.stringify(response));
             response.channel.members.forEach(function(m) {
                 votes.update(
                     { 'userID' : m, 'channelID' : channelID },
