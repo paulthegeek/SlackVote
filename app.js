@@ -69,12 +69,12 @@ app.post('/outgoing', function(req, res, next) {
     var slack = new Slack(appAccessToken);
     var channelID = req.body.channel_id;
     console.log("ChannelID: " + channelID);
-    slack.api("users.list", function(err, response) {
-        console.log("User list response: " + JSON.stringify(response));
-    });
     // Trigger is to start vote
     if (trigger_word == 'startvote') {
 
+        slack.api("users.list", function(err, response) {
+            console.log("User list response: " + JSON.stringify(response));
+        });
         //get all members in channel
         //Needs app token as well
         slack.api("channels.info", {token: process.env.ACCESSTOKEN, channel: channelID}, function(err, response) {
