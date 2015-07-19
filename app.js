@@ -147,8 +147,7 @@ app.post('/vote', function(req, res, next) {
 
     var votes = req.db.get('votes');
     var input = req.body;
-    console.log(input);
-
+    
     if (input.token != process.env.COMMAND) {
         res.json('Invalid token');
         return;
@@ -157,8 +156,8 @@ app.post('/vote', function(req, res, next) {
         { userID : input.user_id, channelID : input.channel_id },
         { $set: { status : 1, vote : input.text, username : input.user_name }},
         function(err, doc) {
-            console.log(err);
-            console.log(doc);
+            console.log("Here is error: " + err);
+            console.log("Here is doc: " + doc);
             if (err) {
                 res.json('Something went wrong. Your vote was not recorded.');
             } else {
