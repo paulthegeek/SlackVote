@@ -78,7 +78,7 @@ app.post('/outgoing', function(req, res, next) {
             console.log("Response: " + JSON.stringify(response));
             console.log("Error: " + JSON.stringify(err));
         });
-        console.log("Slack Call: " + slack_call);
+        console.log("Slack Call: " + JSON.stringify(slack_call));
         // slack.api("channels.info", {'token': appAccessToken, 'channel': channelID}, function(err, response) {
         //     //expect their responses
         //     console.log("Response: " + JSON.stringify(response));
