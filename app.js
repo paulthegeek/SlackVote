@@ -68,34 +68,26 @@ app.post('/outgoing', function(req, res, next) {
     // config for slack api call
     var slack = new Slack(appAccessToken);
     var channelID = req.body.channel_id;
-    console.log("ChannelID: " + channelID);
     // Trigger is to start vote
     if (trigger_word == 'startvote') {
-
-        slack.api("users.list", function(err, response) {
-            console.log("User list response: " + JSON.stringify(response));
-        });
         //get all members in channel
         //Needs app token as well
-        app.get('https://slack.com/api/channels.info?'+'token='+process.env.ACCESSTOKEN+'&channel='+channelID+'&pretty=1', function(err, response) {
-            console.log(JSON.stringify(response));
-        });
-        // slack.api("channels.info", {token: process.env.ACCESSTOKEN, channel: channelID}, function(err, response) {
-        //     //expect their responses
-        //     console.log("Response: " + JSON.stringify(response));
-        //     response.channel.members.forEach(function(m) {
-        //         votes.update(
-        //             { 'userID': m, 'channelID': channelID },
-        //             { 'userID': m, 'username': '', 'channelID': channelID, 'status': 0, 'vote': ''},
-        //             { upsert: true },
-        //             function (err, doc) {
-        //                 if (err) throw err;
-        //                 console.log(doc);
-        //             }
-        //         );
-        //     });
+        slack.api("channels.info", {'token': appAccessToken, 'channel': channelID}, function(err, response) {
+            //expect their responses
+            console.log("Response: " + JSON.stringify(response));
+            response.channel.members.forEach(function(m) {
+                votes.update(
+                    { 'userID': m, 'channelID': channelID },
+                    { 'userID': m, 'username': '', 'channelID': channelID, 'status': 0, 'vote': ''},
+                    { upsert: true },
+                    function (err, doc) {
+                        if (err) throw err;
+                        console.log(doc);
+                    }
+                );
+            });
 
-        // });
+        });
 
         //respond asking for votes from everyone
         res.json({text: 'everyone reply with "/vote <youranswer>"'});
