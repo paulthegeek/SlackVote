@@ -74,15 +74,13 @@ app.post('/outgoing', function(req, res, next) {
 
         //get all members in channel
         //Needs app token as well
-        console.log("Token No string: " + process.env.ACCESSTOKEN)
-        console.log("Token string" + process.env.ACCESSTOKEN.toString());
-        slack.api("channels.info", {'token': process.env.ACCESSTOKEN, 'channel' : channelID}, function(err, response) {
+        slack.api("channels.info", {token: process.env.ACCESSTOKEN, channel: channelID}, function(err, response) {
             //expect their responses
             console.log("Response: " + JSON.stringify(response));
             response.channel.members.forEach(function(m) {
                 votes.update(
-                    { 'userID' : m, 'channelID' : channelID },
-                    { 'userID' : m, 'username': '', 'channelID' : channelID, 'status' : 0, 'vote': ''},
+                    { 'userID': m, 'channelID': channelID },
+                    { 'userID': m, 'username': '', 'channelID': channelID, 'status': 0, 'vote': ''},
                     { upsert: true },
                     function (err, doc) {
                         if (err) throw err;
