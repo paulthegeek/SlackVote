@@ -68,13 +68,13 @@ app.post('/outgoing', function(req, res, next) {
     // config for slack api call
     var slack = new Slack(appAccessToken);
     var channelID = req.body.channel_id;
-    console.log("Channel: " + req.body.channel_id);
 
     // Trigger is to start vote
     if (trigger_word == 'startvote') {
 
         //get all members in channel
-        slack.api("channels.info", { 'channel' : channelID}, function(err, response) {
+        //Needs app token as well
+        slack.api("channels.info", {'token': process.env.ACCESSTOKEN, 'channel' : channelID}, function(err, response) {
             //expect their responses
             response.channel.members.forEach(function(m) {
                 votes.update(
