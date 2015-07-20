@@ -28,7 +28,7 @@ var db = monk(mongoUri);
  */
 var Slack = require('slack-node');
 var appAccessToken = app.get(process.env.ACCESSTOKEN);
-
+console.log("App Token: " + process.env.ACCESSTOKEN);
 // For gzip compression
 app.use(express.compress());
 
