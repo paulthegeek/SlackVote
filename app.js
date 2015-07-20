@@ -97,7 +97,7 @@ app.post('/outgoing', function(req, res, next) {
         var returnText = 'Votes:\n';
 
         // get channel members
-        slack.api('channels.info', { 'channel' : channelID }, function(err, response) {
+        slack.api('channels.info', {'token': appAccessToken, 'channel' : channelID}, function(err, response) {
 
             var params = { userID : { $in : response.channel.members }, channelID : channelID, status : 1 };
 
@@ -122,7 +122,7 @@ app.post('/outgoing', function(req, res, next) {
         });
     } else if (trigger_word == 'votecount') {
         // get channel members
-        slack.api('channels.info', { 'channel' : channelID }, function(err, response) {
+        slack.api('channels.info', {'token': appAccessToken, 'channel' : channelID}, function(err, response) {
 
             var params = { userID : { $in : response.channel.members }, channelID : channelID, status : 1 };
 
