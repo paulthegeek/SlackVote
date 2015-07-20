@@ -93,11 +93,11 @@ app.post('/outgoing', function(req, res, next) {
         res.json({text: 'everyone reply with "/vote <youranswer>"'});
 
     } else if (trigger_word == 'reveal') {
-
+        console.log("Calling reveal");
         var returnText = 'Votes:\n';
 
         // get channel members
-        slack.api('channels.info', {'token': appAccessToken, 'channel' : channelID}, function(err, response) {
+        slack.api('channels.info', {'token': appAccessToken, 'channel': channelID}, function(err, response) {
 
             var params = { userID : { $in : response.channel.members }, channelID : channelID, status : 1 };
 
